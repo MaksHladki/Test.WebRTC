@@ -13,7 +13,44 @@ WebRTC API has been normalized using 'adapter.js'
 WebRtcDemo.ConnectionManager = (function () {
     var _signaler,
         _connections = {},
-        _iceServers = [{ url: 'stun:74.125.142.127:19302' }], // stun.l.google.com - Firefox does not support DNS names.
+        _iceServers = [{ url: 'stun:stun.l.google.com:19302' },
+                       { url: 'stun:stun1.l.google.com:19302' },
+                       { url: 'stun:stun2.l.google.com:19302' },
+                       { url: 'stun:stun3.l.google.com:19302' },
+                       { url: 'stun:stun4.l.google.com:19302' },
+                       { url: 'stun:74.125.142.127:19302' },
+                       { url: 'stun.ideasip.com' },
+                       { url: 'stun.schlund.de' },
+                       { url: 'stun.stunprotocol.org:3478' },
+                       { url: 'stun.voiparound.com' },
+                       { url: 'stun.voipbuster.com' },
+                       { url: 'stun.voipstunt.com' },
+                       { url: 'stun.voxgratia.org' },
+                       { url: 'stun.services.mozilla.com' },
+                       { url: 'stun:stun01.sipphone.com' },
+                       { url: 'stun:stun.ekiga.net' },
+                       { url: 'stun:stun.fwdnet.net' },
+                       { url: 'stun:stun.iptel.org' },
+                       { url: 'stun:stun.rixtelecom.se' },
+                       { url: 'stun:stunserver.org' },
+                       { url: 'stun:stun.softjoys.com' },
+                       { url: 'stun:stun.xten.com' },
+                       {
+                           url: 'turn:numb.viagenie.ca',
+                           credential: 'muazkh',
+                           username: 'webrtc@live.com'
+                       },
+                       {
+                           url: 'turn:192.158.29.39:3478?transport=udp',
+                           credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                           username: '28224511:1379330808'
+                       },
+                       {
+                           url: 'turn:192.158.29.39:3478?transport=tcp',
+                           credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                           username: '28224511:1379330808'
+                       }
+        ],
 
         /* Callbacks */
         _onReadyForStreamCallback = function () { console.log('UNIMPLEMENTED: _onReadyForStreamCallback'); },
@@ -89,9 +126,9 @@ WebRtcDemo.ConnectionManager = (function () {
                     console.log('WebRTC: received offer, sending response...');
                     _onReadyForStreamCallback(connection);
                     connection.createAnswer(function (desc) {
-                            connection.setLocalDescription(desc, function () {
-                                _signaler.sendSignal(JSON.stringify({ "sdp": connection.localDescription }), partnerClientId);
-                            });
+                        connection.setLocalDescription(desc, function () {
+                            _signaler.sendSignal(JSON.stringify({ "sdp": connection.localDescription }), partnerClientId);
+                        });
                     },
                     function (error) { console.log('Error creating session description: ' + error); });
                 } else if (connection.remoteDescription.type == "answer") {
