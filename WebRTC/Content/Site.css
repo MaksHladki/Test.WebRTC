@@ -12,13 +12,27 @@ body {
 /* loading indicator */
 /* yep, I know it is off-center, but I dont want to figure out the right origin */
 @-moz-keyframes rotation {
-    from { -moz-transform: rotate(0deg); -moz-transform-origin: 85% 90%; }
-    to { -moz-transform: rotate(359deg); -moz-transform-origin: 85% 90%; }
+    from {
+        -moz-transform: rotate(0deg);
+        -moz-transform-origin: 85% 90%;
+    }
+
+    to {
+        -moz-transform: rotate(359deg);
+        -moz-transform-origin: 85% 90%;
+    }
 }
 
 @-webkit-keyframes rotation {
-    from { -webkit-transform: rotate(0deg); -webkit-transform-origin: 85% 90%; }
-    to { -webkit-transform: rotate(359deg); -webkit-transform-origin: 85% 90%; }
+    from {
+        -webkit-transform: rotate(0deg);
+        -webkit-transform-origin: 85% 90%;
+    }
+
+    to {
+        -webkit-transform: rotate(359deg);
+        -webkit-transform-origin: 85% 90%;
+    }
 }
 
 [class*=" icon-"].loading-indicator {
@@ -29,11 +43,11 @@ body {
     color: #EC173A;
 }
 
-[class*=" icon-"].loading-indicator.on {
-    display: block;
-    -webkit-animation: rotation 1.5s infinite linear;
-       -moz-animation: rotation 1.5s infinite linear;
-}
+    [class*=" icon-"].loading-indicator.on {
+        display: block;
+        -webkit-animation: rotation 1.5s infinite linear;
+        -moz-animation: rotation 1.5s infinite linear;
+    }
 
 /* browser alert */
 .browser-warning {
@@ -43,7 +57,7 @@ body {
 /* user List*/
 .user-list {
     padding: 9px 0;
-}    
+}
 
 .user .icon-phone-4 {
     display: none;
@@ -98,13 +112,9 @@ body {
 }
 
 .cool-background {
-    background: 
-        linear-gradient(135deg, #ECEDDC 25%, transparent 25%) -50px 0,
-        linear-gradient(225deg, #ECEDDC 25%, transparent 25%) -50px 0,
-        linear-gradient(315deg, #ECEDDC 25%, transparent 25%),
-        linear-gradient(45deg, #ECEDDC 25%, transparent 25%);	
-        background-size: 100px 100px;
-        background-color: #EC173A;
+    background: linear-gradient(135deg, #ECEDDC 25%, transparent 25%) -50px 0, linear-gradient(225deg, #ECEDDC 25%, transparent 25%) -50px 0, linear-gradient(315deg, #ECEDDC 25%, transparent 25%), linear-gradient(45deg, #ECEDDC 25%, transparent 25%);
+    background-size: 100px 100px;
+    background-color: #EC173A;
 }
 
 /* alertify styles */
@@ -116,3 +126,19 @@ input[type='text'] {
     padding: 10px !important;
     height: auto !important;
 }
+
+.message {
+    padding: 3px 0;
+    font-size: 14px;
+    line-height: 20px;
+    clear: both;
+}
+
+    .message .username {
+        float: left;
+    }
+
+    .message .datetime {
+        float: right;
+        font-size: 12px;
+    }

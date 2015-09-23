@@ -19,7 +19,7 @@ WebRtcDemo.App = (function (viewModel, connectionManager) {
             _hub = hub;
 
             $.connection.hub.start()
-                .done(function() {
+                .done(function () {
                     console.log('connected to SignalR hub... connection id: ' + _hub.connection.id);
 
                     // Tell the hub what our username is
@@ -29,7 +29,7 @@ WebRtcDemo.App = (function (viewModel, connectionManager) {
                         onSuccess(hub);
                     }
                 })
-                .fail(function(event) {
+                .fail(function (event) {
                     if (onFailure) {
                         onFailure(event);
                     }
@@ -108,9 +108,9 @@ WebRtcDemo.App = (function (viewModel, connectionManager) {
 
         _attachUiHandlers = function () {
             // Add click handler to users in the "Users" pane
-         
-            $('.well.user-list').on('click','.user', function () {
- 
+
+            $('.user-list').on('click', '.user', function () {
+
                 // Find the target user's SignalR client id
                 var targetConnectionId = $(this).attr('data-cid');
 
@@ -139,6 +139,14 @@ WebRtcDemo.App = (function (viewModel, connectionManager) {
                     _hub.server.hangUp();
                     connectionManager.closeAllConnections();
                     viewModel.Mode('idle');
+                }
+            });
+
+            $('#sendMessageBtn').click(function () {
+                var $message = $('#message');
+                if ($message.val().length > 0) {
+                    _hub.server.sendMessage($message.val());
+                    $message.val('');
                 }
             });
         },
@@ -207,6 +215,16 @@ WebRtcDemo.App = (function (viewModel, connectionManager) {
             // Hub Callback: WebRTC Signal Received
             hub.client.receiveSignal = function (callingUser, data) {
                 connectionManager.newSignal(callingUser.ConnectionId, data);
+            };
+
+            // Hub Callback: WebRTC Signal Received
+            hub.client.addChartMessage = function (name, message) {
+                var $chat = $('#chat');
+                var datetime = moment().format('hh:mm:ss');
+                var pattern = '<div class="message"><div class="username"><b>{{username}}: </b>{{message}}</div><div class="datetime">{{datetime}}</div> </div>';
+                pattern = pattern.replace('{{username}}', name).replace('{{message}}', message).replace('{{datetime}}', datetime);
+                $chat.append(pattern);
+                $chat.scrollTop($chat.height());
             };
         },
 

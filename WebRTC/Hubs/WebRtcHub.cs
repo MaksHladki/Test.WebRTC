@@ -194,6 +194,14 @@ namespace WebRTC.Hubs
             }
         }
 
+        public void SendMessage(string message)
+        {
+            var user = Users.SingleOrDefault(u => u.ConnectionId == Context.ConnectionId);
+            if (user == null) return;
+            Clients.All.addChartMessage(user.Username, message);
+        }
+
+
         #region Private Helpers
 
         private void SendUserListUpdate()

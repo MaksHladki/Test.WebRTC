@@ -26,33 +26,21 @@
 </head>
 
 <body data-bind="attr: { 'data-mode': Mode }">
-    <!-- Invalid browser alert, and reminder to enable media things -->
-    <div class="container-fluid">
-        <div class="row instructions">
-            <div class="col-md-12">
-                <div class="alert"><h4>Look Up!</h4> Your browser should be asking you to enable your webcam and microphone.  <strong>This site will not work until you provide access</strong>.</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-error"><h4>Your browser does not appear to support WebRTC.</h4> Try either the <a href="https://nightly.mozilla.org/">latest Firefox nightly build</a>, or <a href="https://www.google.com/intl/en/chrome/browser/beta.html">Google Chrome Beta</a> to join the fun.</div>
-            </div>
-        </div>
-    </div>
+
     <!-- Top Bar -->
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a class="brand pull-left" href="#">WebRTC Video Caller</a>
-                <span class="loading-indicator icon-spinner-3" data-bind="css: { on: Loading }"></span>
-                <div class="nav-collapse collapse">
-                    <p class="navbar-text pull-right">
-                        You are <span data-bind="text: Username"></span>
-                    </p>
-                </div>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">WebRTC Video Caller</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><span data-bind="text: Username"></span></a></li>
+                </ul>
             </div>
         </div>
-    </div>
+    </nav>
+
     <!-- App Area -->
     <div class="container-fluid">
         <div class="row">
@@ -78,6 +66,11 @@
                         <!-- /ko -->
                     </ul>
                 </div>
+
+                <div id="chat" class="well" style="height: 300px; overflow-y: scroll;">
+                </div>
+                <input type="text" id="message" />
+                <input type="button" id="sendMessageBtn" class="btn btn-primary" value="Send" />
             </div>
             <!-- Videos -->
             <div class="col-md-9">
@@ -93,6 +86,8 @@
                 </div>
             </div>
         </div>
+
+
         <!-- Footer -->
         <hr>
         <footer>
@@ -115,6 +110,7 @@
     <script src="~/Scripts/alertify.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
 
     <!-- SignalR Proxy -->
     <script src="~/signalr/hubs"></script>
@@ -124,6 +120,6 @@
     <script src="~/Scripts/webRtc/connectionManager.js"></script>
     <script src="~/Scripts/webRtc/app.js"></script>
 
-  
+
 </body>
 </html>

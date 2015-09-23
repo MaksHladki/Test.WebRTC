@@ -13,27 +13,20 @@ WebRTC API has been normalized using 'adapter.js'
 WebRtcDemo.ConnectionManager = (function () {
     var _signaler,
         _connections = {},
+
         _iceServers = [{ url: 'stun:stun.l.google.com:19302' },
                        { url: 'stun:stun1.l.google.com:19302' },
                        { url: 'stun:stun2.l.google.com:19302' },
                        { url: 'stun:stun3.l.google.com:19302' },
                        { url: 'stun:stun4.l.google.com:19302' },
                        { url: 'stun:74.125.142.127:19302' },
-                       { url: 'stun.ideasip.com' },
-                       { url: 'stun.schlund.de' },
-                       { url: 'stun.stunprotocol.org:3478' },
-                       { url: 'stun.voiparound.com' },
-                       { url: 'stun.voipbuster.com' },
-                       { url: 'stun.voipstunt.com' },
-                       { url: 'stun.voxgratia.org' },
-                       { url: 'stun.services.mozilla.com' },
                        { url: 'stun:stun01.sipphone.com' },
+                       { url: 'stun:stunserver.org' },
                        { url: 'stun:stun.ekiga.net' },
                        { url: 'stun:stun.fwdnet.net' },
                        { url: 'stun:stun.iptel.org' },
-                       { url: 'stun:stun.rixtelecom.se' },
-                       { url: 'stun:stunserver.org' },
-                       { url: 'stun:stun.softjoys.com' },
+                       { url: 'stun:stun.rixtelecom.se'},
+                       { url: 'stun:stun.softjoys.com'},
                        { url: 'stun:stun.xten.com' },
                        {
                            url: 'turn:numb.viagenie.ca',
@@ -72,6 +65,9 @@ WebRtcDemo.ConnectionManager = (function () {
 
             // Create a new PeerConnection
             var connection = new RTCPeerConnection({ iceServers: _iceServers });
+
+            //console.log(RTCPeerConnection);
+            //console.log(connection);
 
             // ICE Candidate Callback
             connection.onicecandidate = function (event) {
@@ -121,19 +117,23 @@ WebRtcDemo.ConnectionManager = (function () {
         // Process a newly received SDP signal
         _receivedSdpSignal = function (connection, partnerClientId, sdp) {
             console.log('WebRTC: processing sdp signal');
-            connection.setRemoteDescription(new RTCSessionDescription(sdp), function () {
+            connection.setRemoteDescription(new RTCSessionDescription(sdp), function (e) {
                 if (connection.remoteDescription.type == "offer") {
                     console.log('WebRTC: received offer, sending response...');
                     _onReadyForStreamCallback(connection);
                     connection.createAnswer(function (desc) {
                         connection.setLocalDescription(desc, function () {
                             _signaler.sendSignal(JSON.stringify({ "sdp": connection.localDescription }), partnerClientId);
+                        }, function() {
+                            debugger;
                         });
                     },
                     function (error) { console.log('Error creating session description: ' + error); });
                 } else if (connection.remoteDescription.type == "answer") {
                     console.log('WebRTC: received answer');
                 }
+            }, function (e) {
+                debugger;
             });
         },
 
@@ -198,9 +198,16 @@ WebRtcDemo.ConnectionManager = (function () {
 
             // Send an offer for a connection
             connection.createOffer(function (desc) {
-                connection.setLocalDescription(desc, function () {
-                    _signaler.sendSignal(JSON.stringify({ "sdp": connection.localDescription }), partnerClientId);
-                });
+                connection.setLocalDescription(desc, function (e) {
+                    _signaler.sendSignal(JSON.stringify({ 'sdp': connection.localDescription }), partnerClientId);
+                },
+                    function (e) {
+                        debugger;
+                    });
+                //connection.setLocalDescription(desc, function () {
+                //    debugger;
+                //    _signaler.sendSignal(JSON.stringify({ "sdp": connection.localDescription }), partnerClientId);
+                //});
             }, function (error) { console.log('Error creating session description: ' + error); });
         };
 
